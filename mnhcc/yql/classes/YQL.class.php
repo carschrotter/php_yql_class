@@ -1,6 +1,6 @@
 <?php
 
-namespace mnhcc\testing\yql; {
+namespace mnhcc\yql\classes; {
 
     /**
      * Description of YQL
@@ -22,7 +22,7 @@ namespace mnhcc\testing\yql; {
         /**
          * 
          * @param type $statement
-         * @return \mnhcc\testing\yql\YQLStatement
+         * @return \mnhcc\yql\classes\YQLStatement
          */
         public function prepare($statement) {
             return new YQLStatement($statement, $this->diagnostics, $this->env, $this->_format);
@@ -31,7 +31,7 @@ namespace mnhcc\testing\yql; {
         /**
          * 
          * @param type $statement
-         * @return \mnhcc\testing\yql\YQLStatement
+         * @return \mnhcc\yql\classes\YQLStatement
          */
         public function query($statement) {
             $value = new YQLStatement($statement, $this->diagnostics, $this->env, $this->_format);

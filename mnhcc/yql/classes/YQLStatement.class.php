@@ -1,6 +1,6 @@
 <?php
 
-namespace mnhcc\testing\yql; {
+namespace mnhcc\yql\classes; {
 
     /**
      * Description of YQL
