@@ -113,7 +113,6 @@ namespace mnhcc\yql\classes; {
                     break;
             }
             if( $this->_data) {
-                var_dump(\property_exists($this->_data, 'query'));
                 if(\property_exists($this->_data, 'query')) {
                     $this->_results = $this->_data->query->results;
                 }
