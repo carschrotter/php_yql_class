@@ -28,18 +28,40 @@ namespace mnhcc\yql\classes; {
         protected $_data;
         protected $_isDiagnostics;
         
+        protected $_queryType = self::QUERY_TYPE_DEFAULT;
+        
         public function isDiagnostics() {
             if (\func_num_args() > 0)
                 $this->_isDiagnostics = \func_get_arg (0);
             else return $this->_isDiagnostics;
         }
+        
+        public function getQueryType() {
+            if (\func_num_args() > 0)
+                $this->_queryType = \func_get_arg (0);
+            else return $this->_queryType;
+        }
 
-        public function __construct($statement, $diagnostics = true, $env = 'store://datatables.org/alltableswithkeys', $format = 'json') {
+        public function __construct($statement, $diagnostics = true, $env = 'store://datatables.org/alltableswithkeys', $format = 'json', $type = self::QUERY_TYPE_DEFAULT) {
             $this->_position = 0;
             $this->isDiagnostics($diagnostics);
             $this->env = $env;
             $this->_format = $format;
-            $this->addToQery($statement, true);
+            $this->_queryType = $type;
+            $this->_queryEnd = '';
+            $overide = true;
+            if( $this->_queryType == self::QUERY_TYPE_MULTI){
+                if(strpos(strtolower($statement), 'yql.query.multi')) {
+                    /**
+                     * @todo implement pregmatch for analysing the statement
+                     */
+                } else {
+                    $this->addToQery('SELECT * FROM yql.query.multi WHERE queries=\'', true);
+                    $this->_queryEnd = '\';';
+                    $overide = false;
+                }
+            }
+            $this->addToQery($statement, $overide);
         }
 
         /**
@@ -86,7 +108,7 @@ namespace mnhcc\yql\classes; {
          */
         public function execute(array $input_parameters = []) {
             $this->_workingArgs = array_merge($this->_args, $input_parameters);
-            $query = $this->solveParameters($this->_query);
+            $query = $this->solveParameters($this->_query. $this->_queryEnd);
             return $this->_execute($query, $this->_workingArgs['sprintf']);
         }
 
@@ -125,7 +147,7 @@ namespace mnhcc\yql\classes; {
          * Masking question mark with <b>\?<b> <br>
          * Example: <br><code><?php $qery = 'select description from rss(5)
          *  where url = "http://example.com/rss\\?parameter=value'; ?></code></p>
-         * @param type $variable Name of the PHP variable to bind to the YQL statement parameter.
+         * @param mixed $variable Name of the PHP variable to bind to the YQL statement parameter.
          * @param int $data_type Explicit data type for the parameter using the YQL::PARAM_* constants. 
          * @return boolean
          */
@@ -156,7 +178,7 @@ namespace mnhcc\yql\classes; {
          * Masking question mark with <b>\?<b> <br>
          * Example: <br><code><?php $qery = 'select description from rss(5)
          *  where url = "http://example.com/rss\\?parameter=value'; ?></code></p>
-         * @param type $value The value to bind to the parameter. 
+         * @param mixed $value The value to bind to the parameter. 
          * @param int $data_type Explicit data type for the parameter using the YQL::PARAM_* constants. 
          * @return boolean
          */
@@ -177,20 +199,55 @@ namespace mnhcc\yql\classes; {
             return false;
         }
 
+        /**
+         * 
+         * @param string $statement
+         * @param bool $override
+         * @return \mnhcc\yql\classes\YQLStatement
+         */
         public function addToQery($statement, $override = false) {
-            if (strpos($statement, ';', strlen($statement) - 3) < strlen($statement) - 3) {
-                $statement .= ';';
+            if ($this->_query) $this->_query .= PHP_EOL;
+            switch (true) {
+         
+                case $override:
+                    if ($this->_queryType === self::QUERY_TYPE_MULTI){
+                        $this->_query = $statement;
+                    } else {
+                        $this->_query = self::formatQery($statement);
+                    }
+                    break;
+                case $this->_queryType === self::QUERY_TYPE_MULTI :
+                    $this->_query .= self::formatQery(self::_prepareForMulti($statement));
+                    break;
+                default:
+                    $this->_query .= self::formatQery($statement);
+                    break;
             }
-            if ($this->_query) {
-                $this->_query .= PHP_EOL;
-            }
-            if($override)
-                $this->_query = $statement;
-            else
-                $this->_query .= $statement;
+            return $this;   
         }
         
-                /**
+        /**
+         * 
+         * @param string $statement
+         * @return string
+         */
+        public static function formatQery($statement){
+             if (strpos($statement, ';', strlen($statement) - 3) < strlen($statement) - 3) {
+                $statement .= ';';
+            }
+            return $statement;
+        }
+        
+        /**
+         * 
+         * @param string $value
+         * @return string
+         */
+        protected static function _prepareForMulti($value) {
+           return $value;
+        }
+        
+        /**
          * Generates the query with optional arguments
          * 
          * @access public
@@ -205,7 +262,6 @@ namespace mnhcc\yql\classes; {
                 $arg = addslashes($arg);
             }
             $query = vsprintf($queryFormat, $args);
-
             return $query;
         }
 

@@ -24,9 +24,10 @@ namespace mnhcc\yql\classes; {
          * @param type $statement
          * @return \mnhcc\yql\classes\YQLStatement
          */
-        public function prepare($statement, $type = null) {
-            return new YQLStatement($statement, $this->diagnostics, $this->env, $this->_format);
+        public function prepare($statement, $type = self::QUERY_TYPE_DEFAULT) {
+            return new YQLStatement($statement, $this->diagnostics, $this->env, $this->_format, $type);
         }
+        
 
         /**
          * 

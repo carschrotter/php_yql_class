@@ -9,6 +9,10 @@ namespace mnhcc\yql\classes;
      * @author carschrotter
      */
     class YQLBase {  
+        
+        const QUERY_TYPE_DEFAULT = 0;
+        
+        const QUERY_TYPE_MULTI = 1;
         /**
          * Represents the SQL NULL data type.
          * (integer) 0
