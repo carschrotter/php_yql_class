@@ -4,8 +4,6 @@ php_yql_class
 ## German: 
 # Eine PHP YQL Class im PDO Style.
 Ermöglicht das benutzen von YQl inerhalb von php im Stiele einer Datenbankverbindung mit PDO.
----
-***
 ___
 Dies ist eine sehr frühe Betaversion testen und benutzen auf eigne gefahr. Ich freue mich über jede art von feedback!
 
