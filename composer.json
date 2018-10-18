@@ -1,0 +1,69 @@
+{
+
+    "name": "carschrotter/MNHccZendRoutes",
+
+    "description": "SEO Route, SEO Segment",
+
+    "version": "1.0.0",
+
+    "type": "module",
+
+    "license": "MIT",
+
+    "tags": [
+
+        "zend framework",
+
+        "zf2",
+
+        "seo",
+
+        "route"
+
+    ],
+
+    "homepage": "https://github.com/carschrotter/MNHccZendRoutes",
+
+    "authors": [
+
+        {
+
+            "name": "Michael Hegenbarth",
+
+            "homepage": "http://mnhcc.mn-hegenbarth.de/",
+
+            "role": "Developer"
+
+        }
+
+    ],
+
+    "require": {
+
+        "php": ">=5.6.0",
+
+        "zendframework/zend-eventmanager": "*",
+
+        "zendframework/zend-config": "*",
+
+        "zendframework/zend-mvc": "*"
+
+    },
+
+    "autoload": {
+
+        "psr-0": {
+
+            "MNHcC": "src/"
+
+        },
+
+        "classmap": [
+
+            "./Module.php"
+
+        ]
+
+    }
+
+}
