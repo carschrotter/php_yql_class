@@ -1,69 +1,26 @@
 {
-
-    "name": "carschrotter/MNHccZendRoutes",
-
-    "description": "SEO Route, SEO Segment",
-
+    "name": "carschrotter/yql",
+    "description": "a pdo style way to work with yql",
     "version": "1.0.0",
-
-    "type": "module",
-
-    "license": "MIT",
-
+    "license": "GNU",
     "tags": [
-
-        "zend framework",
-
-        "zf2",
-
-        "seo",
-
-        "route"
-
+        "yql",
     ],
-
-    "homepage": "https://github.com/carschrotter/MNHccZendRoutes",
-
+    "homepage": "https://github.com/carschrotter/php_yql_class",
     "authors": [
-
         {
-
             "name": "Michael Hegenbarth",
-
             "homepage": "http://mnhcc.mn-hegenbarth.de/",
-
             "role": "Developer"
-
         }
-
     ],
-
     "require": {
-
         "php": ">=5.6.0",
-
-        "zendframework/zend-eventmanager": "*",
-
-        "zendframework/zend-config": "*",
-
-        "zendframework/zend-mvc": "*"
-
     },
-
     "autoload": {
 
-        "psr-0": {
-
-            "MNHcC": "src/"
-
+        "psr-4": {
+            "\\mnhcc\\yql": "src/yql"
         },
-
-        "classmap": [
-
-            "./Module.php"
-
-        ]
-
     }
-
 }
