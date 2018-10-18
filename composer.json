@@ -19,7 +19,7 @@
     },
     "autoload": {
         "psr-4": {
-            "\\mnhcc\\yql": "src/yql"
+            "\\mnhcc\\yql\\": "src/yql"
         }
     }
 }
